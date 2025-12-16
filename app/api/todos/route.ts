@@ -26,7 +26,7 @@ async function fetchPexelsImage(query: string): Promise<string | null> {
 
     // Return the first image URL if available
     if (data.photos && data.photos.length > 0) {
-      return data.photos[0].src.medium;
+      return data.photos[0].src.large;
     }
 
     return null;
