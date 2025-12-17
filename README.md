@@ -54,6 +54,8 @@ Items are visualized using queries from the Pexels API to dynamically load relev
 Tasks are allowed to have multiple dependencies upon entry. The user can select from their existing task list. On the back-end, a DFS algorithm ensures that there are no circular dependencies and calculates the largest critical path. The path is reflected with all relevant ToDos being highlighted on the display. Based on the dependency chain, each ToDo is given an "Earliest Start Date," which defaults to today's date for overdue or independent tasks. The date has been standardized to UTC time to prevent the "one-day behind" bug. Dependencies are visualized when clicked on via an upstream flow chart implemented on a canvas.
 
 ## Demo:
+[![Watch the Demo](https://img.youtube.com/vi/p655-viK5Ao/maxresdefault.jpg)](https://www.youtube.com/watch?v=p655-viK5Ao)
+*Check out the system in action*
 
 ## Future Additions
 
