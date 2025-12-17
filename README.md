@@ -60,8 +60,8 @@ Tasks are allowed to have multiple dependencies upon entry. The user can select 
 With more time, future additions to this task include:
 
 1. Edit options for the database
-2. Resource leveling to cap and recalculate earliest start dates based on working hours
+2. Resource leveling to cap and recalculate the earliest start dates based on working hours
 3. Multi-collaborator lists with user assignment
 4. Interactive Gantt chart for dependency visualization
-5. Step-by-step view option for critcal paths
-6. UI enhancement: pivot away from canvas and opt for a gradient colorscheme throughout
+5. Step-by-step view option for critical paths
+6. UI enhancement: pivot away from canvas and opt for a gradient color scheme throughout
