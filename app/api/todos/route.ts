@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  calculateEarliestStarts,
+  calculateCriticalPath,
+} from "@/lib/dependencies";
 
 /* Function to fetch image from Pexels for todo item
    @params: query string name for todo item 
@@ -36,6 +40,28 @@ async function fetchPexelsImage(query: string): Promise<string | null> {
   }
 }
 
+// Recalculate all derived fields (earliest starts and critical path)
+async function recalculateAllTodos() {
+  const allTodos = await prisma.todo.findMany();
+
+  // Calculate earliest start dates
+  const earliestStarts = calculateEarliestStarts(allTodos);
+
+  // Calculate critical path
+  const criticalPath = calculateCriticalPath(allTodos);
+
+  // Update all todos
+  for (const todo of allTodos) {
+    await prisma.todo.update({
+      where: { id: todo.id },
+      data: {
+        earliestStart: earliestStarts.get(todo.id) || new Date(),
+        isOnCriticalPath: criticalPath.has(todo.id),
+      },
+    });
+  }
+}
+
 export async function GET() {
   try {
     const todos = await prisma.todo.findMany({
@@ -61,8 +87,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
-    const { title, dueDate } = body;
+    const { title, dueDate, duration = 1, dependencyIds } = body;
 
     if (!title || title.trim() === "") {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -75,8 +100,12 @@ export async function POST(request: Request) {
         title,
         dueDate: dueDate ? new Date(dueDate) : null,
         imageUrl,
+        duration: duration || 1,
+        dependencyIds: dependencyIds ? JSON.stringify(dependencyIds) : null,
       },
     });
+    // Recalculate earliest starts and critical path
+    await recalculateAllTodos();
 
     return NextResponse.json(todo, { status: 201 });
   } catch (error) {

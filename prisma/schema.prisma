@@ -13,4 +13,9 @@ model Todo {
   createdAt DateTime  @default(now())
   dueDate   DateTime?
   imageUrl  String?
+  duration  Int   @default(1)
+  isOnCriticalPath  Boolean @default(false)
+  dependencyIds String?
+  earliestStart DateTime?
 }
+
